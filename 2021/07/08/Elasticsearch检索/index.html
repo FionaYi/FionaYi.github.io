@@ -6,17 +6,17 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge" >
   <link rel="dns-prefetch" href="https://FionaYi.github.io">
-  <title>python练习笔记 | Fiona&#39;s Blog</title>
+  <title>Elasticsearch检索 | Fiona&#39;s Blog</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="开始回顾Python数据结构和相关的算法，如果有记不住但以后又需要的东西，就记在这里吧。">
+  <meta name="description" content="Elasticsearch具有强大的检索功能，可以处理文档中各种检索问题。就在这篇中看看吧！">
 <meta property="og:type" content="article">
-<meta property="og:title" content="python练习笔记">
-<meta property="og:url" content="https://fionayi.github.io/2021/07/06/python%E7%BB%83%E4%B9%A0%E7%AC%94%E8%AE%B0/index.html">
+<meta property="og:title" content="Elasticsearch检索">
+<meta property="og:url" content="https://fionayi.github.io/2021/07/08/Elasticsearch%E6%A3%80%E7%B4%A2/index.html">
 <meta property="og:site_name" content="Fiona&#39;s Blog">
-<meta property="og:description" content="开始回顾Python数据结构和相关的算法，如果有记不住但以后又需要的东西，就记在这里吧。">
+<meta property="og:description" content="Elasticsearch具有强大的检索功能，可以处理文档中各种检索问题。就在这篇中看看吧！">
 <meta property="og:locale" content="zh_CN">
-<meta property="article:published_time" content="2021-07-06T03:49:44.000Z">
-<meta property="article:modified_time" content="2021-07-07T03:58:32.134Z">
+<meta property="article:published_time" content="2021-07-08T06:20:57.000Z">
+<meta property="article:modified_time" content="2021-07-08T08:29:53.631Z">
 <meta property="article:author" content="Fiona">
 <meta property="article:tag" content="说明">
 <meta name="twitter:card" content="summary">
@@ -142,37 +142,96 @@
             <canvas data-colors="#eaeaea" data-sectionHeight="100" data-contentId="js-content" id="myCanvas1" class="anm-canvas"></canvas>
           </div>
           <div id="js-content" class="content-ll">
-            <article id="post-python练习笔记" class="article article-type-post " itemscope itemprop="blogPost">
+            <article id="post-Elasticsearch检索" class="article article-type-post " itemscope itemprop="blogPost">
   <div class="article-inner">
     
       <header class="article-header">
         
   
     <h1 class="article-title" itemprop="name">
-      python练习笔记
+      Elasticsearch检索
     </h1>
   
 
         
-        <a href="/2021/07/06/python%E7%BB%83%E4%B9%A0%E7%AC%94%E8%AE%B0/" class="archive-article-date">
-  	<time datetime="2021-07-06T03:49:44.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2021-07-06</time>
+        <a href="/2021/07/08/Elasticsearch%E6%A3%80%E7%B4%A2/" class="archive-article-date">
+  	<time datetime="2021-07-08T06:20:57.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2021-07-08</time>
 </a>
         
       </header>
     
     <div class="article-entry" itemprop="articleBody">
       
-        <p>开始回顾Python数据结构和相关的算法，如果有记不住但以后又需要的东西，就记在这里吧。</p>
+        <p>Elasticsearch具有强大的检索功能，可以处理文档中各种检索问题。就在这篇中看看吧！</p>
 <span id="more"></span>
 
-<h2 id="List相关函数"><a href="#List相关函数" class="headerlink" title="List相关函数"></a>List相关函数</h2><p>list.sort()</p>
-<p>直接对list进行升序排序，返回值为None</p>
-<p>list.append(e)</p>
-<p>在list中增加一个元素e，返回值为None</p>
-<p>list.remove(e)</p>
-<p>在list中删除一个元素e，返回值为None</p>
-<h2 id="Set相关函数"><a href="#Set相关函数" class="headerlink" title="Set相关函数"></a>Set相关函数</h2><p>set.add(e)</p>
-<p>在set中增加一个元素e</p>
+<p>[TOC]</p>
+<h3 id="1-一句话查询"><a href="#1-一句话查询" class="headerlink" title="1. 一句话查询"></a>1. 一句话查询</h3><p>例如：在school索引中，查询类型为student，姓名为“liu”的同学：</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">GET school/student/_search?q=name:liu</span><br></pre></td></tr></table></figure>
+
+<p>相当于数据库查询语句中的：</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> <span class="operator">*</span> <span class="keyword">from</span> student <span class="keyword">where</span> name<span class="operator">=</span><span class="string">&#x27;liu&#x27;</span>;</span><br></pre></td></tr></table></figure>
+
+<p><font color="grey">这里存在问题，如果查询中文，则会出现错误。</font></p>
+<p>得到响应如下：</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  <span class="attr">&quot;took&quot;</span> : <span class="number">2</span>,</span><br><span class="line">  <span class="attr">&quot;timed_out&quot;</span> : <span class="literal">false</span>,</span><br><span class="line">  <span class="attr">&quot;_shards&quot;</span> : &#123;</span><br><span class="line">    <span class="attr">&quot;total&quot;</span> : <span class="number">5</span>,</span><br><span class="line">    <span class="attr">&quot;successful&quot;</span> : <span class="number">5</span>,</span><br><span class="line">    <span class="attr">&quot;skipped&quot;</span> : <span class="number">0</span>,</span><br><span class="line">    <span class="attr">&quot;failed&quot;</span> : <span class="number">0</span></span><br><span class="line">  &#125;,</span><br><span class="line">  <span class="attr">&quot;hits&quot;</span> : &#123;</span><br><span class="line">    <span class="attr">&quot;total&quot;</span> : <span class="number">1</span>,</span><br><span class="line">    <span class="attr">&quot;max_score&quot;</span> : <span class="number">0.2876821</span>,</span><br><span class="line">    <span class="attr">&quot;hits&quot;</span> : [</span><br><span class="line">      &#123;</span><br><span class="line">        <span class="attr">&quot;_index&quot;</span> : <span class="string">&quot;school&quot;</span>,</span><br><span class="line">        <span class="attr">&quot;_type&quot;</span> : <span class="string">&quot;student&quot;</span>,</span><br><span class="line">        <span class="attr">&quot;_id&quot;</span> : <span class="string">&quot;5&quot;</span>,</span><br><span class="line">        <span class="attr">&quot;_score&quot;</span> : <span class="number">0.2876821</span>,</span><br><span class="line">        <span class="attr">&quot;_source&quot;</span> : &#123;</span><br><span class="line">          <span class="attr">&quot;name&quot;</span> : <span class="string">&quot;liu&quot;</span>,</span><br><span class="line">          <span class="attr">&quot;age&quot;</span> : <span class="number">20</span>,</span><br><span class="line">          <span class="attr">&quot;no&quot;</span> : <span class="string">&quot;19117102&quot;</span>,</span><br><span class="line">          <span class="attr">&quot;major&quot;</span> : <span class="string">&quot;数据科学&quot;</span></span><br><span class="line">        &#125;</span><br><span class="line">      &#125;</span><br><span class="line">    ]</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>其中<code>hits</code>中包含索引和文档的信息以及具体的文档，<code>total</code>代表总共查询出的数据条数，<code>max_score</code>代表查询出所有数据的最高得分，得分越高与结果匹配度更好。</p>
+<h3 id="2-模糊查询"><a href="#2-模糊查询" class="headerlink" title="2. 模糊查询"></a>2. 模糊查询</h3><p>例如：查询姓名中有“刘”字的同学：</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">GET school/student/_search</span><br><span class="line">&#123;</span><br><span class="line">  <span class="attr">&quot;query&quot;</span>: &#123;</span><br><span class="line">    <span class="attr">&quot;match&quot;</span>: &#123;</span><br><span class="line">      <span class="attr">&quot;name&quot;</span>: <span class="string">&quot;刘&quot;</span></span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>相当于数据库查询语句中的：</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> <span class="operator">*</span> <span class="keyword">from</span> student <span class="keyword">where</span> name <span class="keyword">like</span> <span class="string">&#x27;%刘%&#x27;</span>;</span><br></pre></td></tr></table></figure>
+
+<h3 id="3-字段过滤"><a href="#3-字段过滤" class="headerlink" title="3. 字段过滤"></a>3. 字段过滤</h3><p>在上面的查询中，会展示一个文档的全部信息。但是在实际使用中，我们可以仅获取部分信息，通过<code>_source</code>来过滤展现的结果。</p>
+<p>例如：查询姓名中有“刘”字的同学，显示这些同学的姓名和年龄：</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">GET school/student/_search</span><br><span class="line">&#123;</span><br><span class="line">  <span class="attr">&quot;query&quot;</span>: &#123;</span><br><span class="line">    <span class="attr">&quot;match&quot;</span>: &#123;</span><br><span class="line">      <span class="attr">&quot;name&quot;</span>: <span class="string">&quot;刘&quot;</span></span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">  , <span class="attr">&quot;_source&quot;</span>: [<span class="string">&quot;name&quot;</span>, <span class="string">&quot;age&quot;</span>]</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>相当于数据库查询语句中的：</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> name,age <span class="keyword">from</span> student <span class="keyword">where</span> name <span class="keyword">like</span> <span class="string">&#x27;%刘%&#x27;</span>;</span><br></pre></td></tr></table></figure>
+
+<h3 id="4-结果排序"><a href="#4-结果排序" class="headerlink" title="4. 结果排序"></a>4. 结果排序</h3><p>如果想要以某个字段为准对检索结果排序，可以通过<code>sort</code>来实现该功能。指定字段排序得到的结果中，并不会给出分数。</p>
+<p>例如：查询姓名中有“刘”字的同学，并按照这些同学的年龄降序排序：</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">GET school/student/_search</span><br><span class="line">&#123;</span><br><span class="line">  <span class="attr">&quot;query&quot;</span>: &#123;</span><br><span class="line">    <span class="attr">&quot;match&quot;</span>: &#123;</span><br><span class="line">      <span class="attr">&quot;name&quot;</span>: <span class="string">&quot;刘&quot;</span></span><br><span class="line">    &#125;</span><br><span class="line">  &#125;,</span><br><span class="line">  <span class="attr">&quot;sort&quot;</span>: [</span><br><span class="line">    &#123;</span><br><span class="line">      <span class="attr">&quot;age&quot;</span>: &#123;</span><br><span class="line">        <span class="attr">&quot;order&quot;</span>: <span class="string">&quot;desc&quot;</span></span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  ]</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>相当于数据库查询语句中的：</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> <span class="operator">*</span> <span class="keyword">from</span> student <span class="keyword">where</span> name <span class="keyword">like</span> <span class="string">&#x27;%刘%&#x27;</span> <span class="keyword">order</span> <span class="keyword">by</span> age <span class="keyword">desc</span>;</span><br></pre></td></tr></table></figure>
+
+<h3 id="5-数量限制"><a href="#5-数量限制" class="headerlink" title="5. 数量限制"></a>5. 数量限制</h3><p>在网站检索时，可能会面临多项检索结果分页的问题，可以采用<code>from</code>和<code>size</code>的方式设置。<code>from</code>代表从数据起始位置，<code>size</code>代表返回数据条数。注意，数据下标是从0开始的。</p>
+<p>例如：查询姓名中有“刘”字的同学，从第1条数据开始显示，共展示2条数据。</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">GET school/student/_search</span><br><span class="line">&#123;</span><br><span class="line">  <span class="attr">&quot;query&quot;</span>: &#123;</span><br><span class="line">    <span class="attr">&quot;match&quot;</span>: &#123;</span><br><span class="line">      <span class="attr">&quot;name&quot;</span>: <span class="string">&quot;刘&quot;</span></span><br><span class="line">    &#125;</span><br><span class="line">  &#125;,</span><br><span class="line">  <span class="attr">&quot;from&quot;</span>: <span class="number">0</span>,</span><br><span class="line">  <span class="attr">&quot;size&quot;</span>: <span class="number">2</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="6-多条件查询"><a href="#6-多条件查询" class="headerlink" title="6. 多条件查询"></a>6. 多条件查询</h3><h4 id="6-1-布尔检索"><a href="#6-1-布尔检索" class="headerlink" title="6.1 布尔检索"></a>6.1 布尔检索</h4><p>采用<code>bool</code>可以实现多条件的组合查询，其中<code>must</code>相当于and，多个条件均符合才会被检出；<code>should</code>相当于or，只要有任意条件符合就可以被检出；<code>must_not</code>相当于not，不符合该条件的会被检出。</p>
+<p>例如：查询姓名中有“刘”字，且年龄为20岁的同学</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">GET school/student/_search</span><br><span class="line">&#123;</span><br><span class="line">  <span class="attr">&quot;query&quot;</span>: &#123;</span><br><span class="line">    <span class="attr">&quot;bool&quot;</span>: &#123;</span><br><span class="line">      <span class="attr">&quot;must&quot;</span>: [</span><br><span class="line">        &#123;</span><br><span class="line">          <span class="attr">&quot;match&quot;</span>: &#123;</span><br><span class="line">            <span class="attr">&quot;name&quot;</span>: <span class="string">&quot;刘&quot;</span></span><br><span class="line">          &#125;</span><br><span class="line">        &#125;,</span><br><span class="line">        &#123;</span><br><span class="line">          <span class="attr">&quot;match&quot;</span>: &#123;</span><br><span class="line">            <span class="attr">&quot;age&quot;</span>: <span class="number">20</span></span><br><span class="line">          &#125;</span><br><span class="line">        &#125;</span><br><span class="line">      ]</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>相当于数据库查询语句中的：</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> <span class="operator">*</span> <span class="keyword">from</span> student <span class="keyword">where</span> name <span class="keyword">like</span> <span class="string">&#x27;%刘%&#x27;</span> <span class="keyword">and</span> age<span class="operator">=</span><span class="number">20</span>;</span><br></pre></td></tr></table></figure>
+
+<p>例如：查询年龄不为20岁的同学</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">GET school/student/_search</span><br><span class="line">&#123;</span><br><span class="line">  <span class="attr">&quot;query&quot;</span>: &#123;</span><br><span class="line">    <span class="attr">&quot;bool&quot;</span>: &#123;</span><br><span class="line">      <span class="attr">&quot;must_not&quot;</span>: [</span><br><span class="line">        &#123;</span><br><span class="line">          <span class="attr">&quot;match&quot;</span>: &#123;</span><br><span class="line">            <span class="attr">&quot;age&quot;</span>: <span class="number">20</span></span><br><span class="line">          &#125;</span><br><span class="line">        &#125;</span><br><span class="line">      ]</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>相当于数据库查询语句中的：</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> <span class="operator">*</span> <span class="keyword">from</span> student <span class="keyword">where</span> age<span class="operator">!=</span><span class="number">20</span>;</span><br></pre></td></tr></table></figure>
+
+<h4 id="6-2-条件过滤"><a href="#6-2-条件过滤" class="headerlink" title="6.2 条件过滤"></a>6.2 条件过滤</h4><p>对于年龄等数值型的字段，可以采用<code>filter</code>实现，其中<code>gte</code>表示大于等于（greater than or equal），<code>gt</code>表示大于，<code>lte</code>表示小于等于（less than or equal），<code>lt</code>表示小于。</p>
+<p>例如：查询姓名中有“刘”字，且年龄大于等于20岁且小于等于21岁的同学。</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">GET school/student/_search</span><br><span class="line">&#123;</span><br><span class="line">  <span class="attr">&quot;query&quot;</span>: &#123;</span><br><span class="line">    <span class="attr">&quot;bool&quot;</span>: &#123;</span><br><span class="line">      <span class="attr">&quot;must&quot;</span>: [</span><br><span class="line">        &#123;</span><br><span class="line">          <span class="attr">&quot;match&quot;</span>: &#123;</span><br><span class="line">            <span class="attr">&quot;name&quot;</span>: <span class="string">&quot;刘&quot;</span></span><br><span class="line">          &#125;</span><br><span class="line">        &#125;</span><br><span class="line">      ],</span><br><span class="line">      <span class="attr">&quot;filter&quot;</span>: &#123;</span><br><span class="line">        <span class="attr">&quot;range&quot;</span>: &#123;</span><br><span class="line">          <span class="attr">&quot;age&quot;</span>: &#123;</span><br><span class="line">            <span class="attr">&quot;gte&quot;</span>: <span class="number">20</span>,</span><br><span class="line">            <span class="attr">&quot;lte&quot;</span>: <span class="number">21</span></span><br><span class="line">          &#125;</span><br><span class="line">        &#125;</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>相当于数据库查询语句中的：</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> <span class="operator">*</span> <span class="keyword">from</span> student <span class="keyword">where</span> age<span class="operator">&gt;=</span><span class="number">20</span> <span class="keyword">or</span> age<span class="operator">&lt;=</span><span class="number">21</span>;</span><br></pre></td></tr></table></figure>
+
+<h4 id="6-3-妙用空格"><a href="#6-3-妙用空格" class="headerlink" title="6.3 妙用空格"></a>6.3 妙用空格</h4><p>对于同一个字段内多个条件，可以直接采用空格的方式。</p>
+<p>例如：查询专业中有“管理”和“系统”的同学</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">GET school/student/_search</span><br><span class="line">&#123;</span><br><span class="line">  <span class="attr">&quot;query&quot;</span>: &#123;</span><br><span class="line">    <span class="attr">&quot;match&quot;</span>: &#123;</span><br><span class="line">      <span class="attr">&quot;major&quot;</span>: <span class="string">&quot;管理 系统&quot;</span></span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="7-自定义高亮"><a href="#7-自定义高亮" class="headerlink" title="7. 自定义高亮"></a>7. 自定义高亮</h3><p>将查询结果高亮显示，可以自定义标签，<code>pre_tags</code>为前面的标签，<code>post_tags</code>为后面的标签，得到的检索结果中就会出现<code>&lt;p&gt;刘&lt;/p&gt;XX</code>。可以通过自定义标签的方式，实现网页中检索词的高亮。</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">GET school/student/_search</span><br><span class="line">&#123;</span><br><span class="line">  <span class="attr">&quot;query&quot;</span>: &#123;</span><br><span class="line">    <span class="attr">&quot;match&quot;</span>: &#123;</span><br><span class="line">      <span class="attr">&quot;name&quot;</span>: <span class="string">&quot;刘&quot;</span></span><br><span class="line">    &#125;</span><br><span class="line">  &#125;,</span><br><span class="line">  <span class="attr">&quot;highlight&quot;</span>: &#123;</span><br><span class="line">    <span class="attr">&quot;pre_tags&quot;</span>: <span class="string">&quot;&lt;p&gt;&quot;</span>,</span><br><span class="line">    <span class="attr">&quot;post_tags&quot;</span>: <span class="string">&quot;&lt;/p&gt;&quot;</span>, </span><br><span class="line">    <span class="attr">&quot;fields&quot;</span>: &#123;</span><br><span class="line">      <span class="attr">&quot;name&quot;</span>: &#123;&#125;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="其它"><a href="#其它" class="headerlink" title="其它"></a>其它</h3><p>关于分词：term直接精确查询，match会使用分词器解析文档，再对文档进行查询</p>
+<p>关于类型：keyword类型的字段不会被分词器解析，text类型的字段会被分词器解析</p>
+<h3 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h3><p><a target="_blank" rel="noopener" href="https://www.bilibili.com/video/BV17a4y1x7zq?from=search&seid=17922484234128456546">【狂神说Java】ElasticSearch7.6.x最新完整教程通俗易懂</a></p>
+<p><a target="_blank" rel="noopener" href="https://www.cnblogs.com/xiohao/p/12970224.html">ES基本查询语句教程</a></p>
 
       
 
@@ -242,7 +301,7 @@
     <a class="close js-modal-close" href="javascript:;"><i class="icon icon-close"></i></a>
     <p>扫一扫，分享到微信</p>
     <div class="wx-qrcode">
-      <img src="//pan.baidu.com/share/qrcode?url=https://fionayi.github.io/2021/07/06/python%E7%BB%83%E4%B9%A0%E7%AC%94%E8%AE%B0/" alt="微信分享二维码">
+      <img src="//pan.baidu.com/share/qrcode?url=https://fionayi.github.io/2021/07/08/Elasticsearch%E6%A3%80%E7%B4%A2/" alt="微信分享二维码">
     </div>
 </div>
 
@@ -256,18 +315,9 @@
   
 <nav id="article-nav">
   
-    <a href="/2021/07/08/Elasticsearch%E6%A3%80%E7%B4%A2/" id="article-nav-newer" class="article-nav-link-wrap">
-      <i class="icon-circle-left"></i>
-      <div class="article-nav-title">
-        
-          Elasticsearch检索
-        
-      </div>
-    </a>
   
-  
-    <a href="/2021/07/06/Elasticsearch%E5%AD%A6%E4%B9%A0/" id="article-nav-older" class="article-nav-link-wrap">
-      <div class="article-nav-title">Elasticsearch 学习</div>
+    <a href="/2021/07/06/python%E7%BB%83%E4%B9%A0%E7%AC%94%E8%AE%B0/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">python练习笔记</div>
       <i class="icon-circle-right"></i>
     </a>
   
@@ -294,7 +344,7 @@
                 </span>
                 <span class="tooltip-content">
                     <div class="toc-article">
-                    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#List%E7%9B%B8%E5%85%B3%E5%87%BD%E6%95%B0"><span class="toc-number">1.</span> <span class="toc-text">List相关函数</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Set%E7%9B%B8%E5%85%B3%E5%87%BD%E6%95%B0"><span class="toc-number">2.</span> <span class="toc-text">Set相关函数</span></a></li></ol>
+                    <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-%E4%B8%80%E5%8F%A5%E8%AF%9D%E6%9F%A5%E8%AF%A2"><span class="toc-number">1.</span> <span class="toc-text">1. 一句话查询</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-%E6%A8%A1%E7%B3%8A%E6%9F%A5%E8%AF%A2"><span class="toc-number">2.</span> <span class="toc-text">2. 模糊查询</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-%E5%AD%97%E6%AE%B5%E8%BF%87%E6%BB%A4"><span class="toc-number">3.</span> <span class="toc-text">3. 字段过滤</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-%E7%BB%93%E6%9E%9C%E6%8E%92%E5%BA%8F"><span class="toc-number">4.</span> <span class="toc-text">4. 结果排序</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5-%E6%95%B0%E9%87%8F%E9%99%90%E5%88%B6"><span class="toc-number">5.</span> <span class="toc-text">5. 数量限制</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#6-%E5%A4%9A%E6%9D%A1%E4%BB%B6%E6%9F%A5%E8%AF%A2"><span class="toc-number">6.</span> <span class="toc-text">6. 多条件查询</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#6-1-%E5%B8%83%E5%B0%94%E6%A3%80%E7%B4%A2"><span class="toc-number">6.1.</span> <span class="toc-text">6.1 布尔检索</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#6-2-%E6%9D%A1%E4%BB%B6%E8%BF%87%E6%BB%A4"><span class="toc-number">6.2.</span> <span class="toc-text">6.2 条件过滤</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#6-3-%E5%A6%99%E7%94%A8%E7%A9%BA%E6%A0%BC"><span class="toc-number">6.3.</span> <span class="toc-text">6.3 妙用空格</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#7-%E8%87%AA%E5%AE%9A%E4%B9%89%E9%AB%98%E4%BA%AE"><span class="toc-number">7.</span> <span class="toc-text">7. 自定义高亮</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%85%B6%E5%AE%83"><span class="toc-number">8.</span> <span class="toc-text">其它</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Reference"><span class="toc-number">9.</span> <span class="toc-text">Reference</span></a></li></ol>
                     </div>
                 </span>
             </div>
