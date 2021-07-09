@@ -6,17 +6,19 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge" >
   <link rel="dns-prefetch" href="https://FionaYi.github.io">
-  <title>Tag: test | Fiona&#39;s Blog</title>
+  <title>Elasticsearch的Python调用 | Fiona&#39;s Blog</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="test">
-<meta property="og:type" content="website">
-<meta property="og:title" content="Fiona&#39;s Blog">
-<meta property="og:url" content="https://fionayi.github.io/tags/test/index.html">
+  <meta name="description" content="创建和查询需要超级长的json代码，如果批量插入数据或者检索，是一件非常麻烦的事情。因此期望通过python调用的方式，将这一批量过程简单化。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Elasticsearch的Python调用">
+<meta property="og:url" content="https://fionayi.github.io/2021/07/09/Elasticsearch%E7%9A%84Python%E8%B0%83%E7%94%A8/index.html">
 <meta property="og:site_name" content="Fiona&#39;s Blog">
-<meta property="og:description" content="test">
+<meta property="og:description" content="创建和查询需要超级长的json代码，如果批量插入数据或者检索，是一件非常麻烦的事情。因此期望通过python调用的方式，将这一批量过程简单化。">
 <meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2021-07-09T02:41:11.000Z">
+<meta property="article:modified_time" content="2021-07-09T08:33:50.909Z">
 <meta property="article:author" content="Fiona">
-<meta property="article:tag" content="test">
+<meta property="article:tag" content="说明">
 <meta name="twitter:card" content="summary">
   
     <link rel="alternative" href="/atom.xml" title="Fiona&#39;s Blog" type="application/atom+xml">
@@ -140,60 +142,223 @@
             <canvas data-colors="#eaeaea" data-sectionHeight="100" data-contentId="js-content" id="myCanvas1" class="anm-canvas"></canvas>
           </div>
           <div id="js-content" class="content-ll">
-            
-  
-  
+            <article id="post-Elasticsearch的Python调用" class="article article-type-post " itemscope itemprop="blogPost">
+  <div class="article-inner">
     
-    
-      
-      
-      <section class="archives-wrap">
-        <div class="archive-year-wrap">
-          <a href="/archives/2021" class="archive-year">2021</a>
-        </div>
-        <div class="archives">
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2021/04/01/%E7%AC%AC%E4%B8%80%E7%AF%87%E5%8D%9A%E5%AE%A2%EF%BC%81/" class="archive-article-date">
-  	<time datetime="2021-04-01T03:29:18.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2021-04-01</time>
-</a>
-        </div>
-    	 
+      <header class="article-header">
+        
   
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2021/04/01/%E7%AC%AC%E4%B8%80%E7%AF%87%E5%8D%9A%E5%AE%A2%EF%BC%81/">第一篇博客！</a>
+    <h1 class="article-title" itemprop="name">
+      Elasticsearch的Python调用
     </h1>
   
 
-        <div class="article-info info-on-right">
-          
+        
+        <a href="/2021/07/09/Elasticsearch%E7%9A%84Python%E8%B0%83%E7%94%A8/" class="archive-article-date">
+  	<time datetime="2021-07-09T02:41:11.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2021-07-09</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>创建和查询需要超级长的json代码，如果批量插入数据或者检索，是一件非常麻烦的事情。因此期望通过python调用的方式，将这一批量过程简单化。</p>
+<span id="more"></span>
+
+<p><a target="_blank" rel="noopener" href="https://elasticsearch-py.readthedocs.io/en/master/api.html">官方文档：API Documentation</a></p>
+<p>elasticsearch是python中的一个第三方库，可以引用其中的函数进行相关操作。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> elasticsearch <span class="keyword">import</span> Elasticsearch <span class="comment"># 在elasticsearch类中引入Elasticsearch类</span></span><br><span class="line"></span><br><span class="line">es = Elasticsearch() <span class="comment"># 将类实例化创建类的对象es</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="索引相关操作"><a href="#索引相关操作" class="headerlink" title="索引相关操作"></a>索引相关操作</h3><h4 id="1-创建索引"><a href="#1-创建索引" class="headerlink" title="1. 创建索引"></a>1. 创建索引</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">es.indicies.create(index=<span class="string">&quot;index_name&quot;</span>, ignore=<span class="number">400</span>)</span><br></pre></td></tr></table></figure>
+
+<p>创建索引，索引的名字是index_name，如果已经存在该索引，会返回400，ignore=400则代表如果已经存在就停止创建新索引。</p>
+<h4 id="2-查看索引信息"><a href="#2-查看索引信息" class="headerlink" title="2. 查看索引信息"></a>2. 查看索引信息</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">result = es.indices.get(index=<span class="string">&#x27;index_name&#x27;</span>)</span><br></pre></td></tr></table></figure>
+
+<p>查看索引信息，索引的名字是index_name，会返回与该索引相关的信息存储在result中。</p>
+<h4 id="3-删除索引"><a href="#3-删除索引" class="headerlink" title="3. 删除索引"></a>3. 删除索引</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">es.indices.delete(index=<span class="string">&#x27;index_name&#x27;</span>)</span><br></pre></td></tr></table></figure>
+
+<p>删除索引，索引的名字是index_name。</p>
+<h3 id="文档相关操作"><a href="#文档相关操作" class="headerlink" title="文档相关操作"></a>文档相关操作</h3><h4 id="1-创建文档"><a href="#1-创建文档" class="headerlink" title="1. 创建文档"></a>1. 创建文档</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">es.index(index=<span class="string">&quot;index_name&quot;</span>, doc_type=<span class="string">&quot;type_name&quot;</span>, <span class="built_in">id</span>=<span class="number">1</span>, body=&#123;<span class="string">&quot;field1&quot;</span>: <span class="string">&quot;value1&quot;</span>, <span class="string">&quot;field2&quot;</span>: <span class="string">&quot;value2&quot;</span>&#125;)</span><br></pre></td></tr></table></figure>
+
+<p>在索引中创建一个新文档/或更新文档。当索引中已存在具有相同id的文档时，返回 409 响应。其中index是索引名称，doc_type是文档类型，id是文档id，body是文档主体。</p>
+<h4 id="2-查看文档信息"><a href="#2-查看文档信息" class="headerlink" title="2. 查看文档信息"></a>2. 查看文档信息</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">result = es.get(index=<span class="string">&quot;index_name&quot;</span>, doc_type=<span class="string">&quot;type_name&quot;</span>, <span class="built_in">id</span>=<span class="number">1</span>)</span><br></pre></td></tr></table></figure>
+
+<p>从索引中根据id返回一个文档。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">body = &#123;</span><br><span class="line">    <span class="string">&quot;query&quot;</span>: &#123;</span><br><span class="line">        <span class="string">&quot;match&quot;</span>: &#123;</span><br><span class="line">            <span class="string">&quot;field1&quot;</span>: <span class="string">&quot;value1&quot;</span></span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line">result = es.search(index=<span class="string">&quot;index_name&quot;</span>, doc_type=<span class="string">&quot;type_name&quot;</span>, body=body)</span><br></pre></td></tr></table></figure>
+
+<p>查询文档，得到匹配查询的结果存储在result中，需要查询的内容写在body中，与<a href="https://fionayi.github.io/2021/07/08/Elasticsearch%E6%A3%80%E7%B4%A2">Elasticsearch检索</a>中的格式相同。</p>
+<h4 id="3-更新文档"><a href="#3-更新文档" class="headerlink" title="3. 更新文档"></a>3. 更新文档</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">!这个有问题! es.update(index=<span class="string">&quot;index_name&quot;</span>, doc_type=<span class="string">&quot;type_name&quot;</span>, <span class="built_in">id</span>=<span class="number">1</span>, body=&#123;<span class="string">&quot;field1&quot;</span>: <span class="string">&quot;value1&quot;</span>&#125;)</span><br></pre></td></tr></table></figure>
+
+<p>根据部分文档信息更新文档。</p>
+<h4 id="4-删除文档"><a href="#4-删除文档" class="headerlink" title="4. 删除文档"></a>4. 删除文档</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">es.delete(index=<span class="string">&#x27;index_name&#x27;</span>, doc_type=<span class="string">&#x27;type_name&#x27;</span>, <span class="built_in">id</span>=<span class="number">1</span>)</span><br></pre></td></tr></table></figure>
+
+<p>从索引中删除文档。</p>
+<h4 id="5-批量操作"><a href="#5-批量操作" class="headerlink" title="5. 批量操作"></a>5. 批量操作</h4><h5 id="5-1-批量请求"><a href="#5-1-批量请求" class="headerlink" title="5.1 批量请求"></a>5.1 批量请求</h5><p><a target="_blank" rel="noopener" href="https://www.elastic.co/guide/en/elasticsearch/reference/6.5/docs-bulk.html">官方文档：Bulk API</a></p>
+<p>bulk允许在单个请求中执行多个create/index/update/delete操作，可以大大提高索引速度。</p>
+<p>使用换行符分隔的json结构在请求体中指定操作：</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">action_and_meta_data\n</span><br><span class="line">optional_source\n</span><br><span class="line">action_and_meta_data\n</span><br><span class="line">optional_source\n</span><br></pre></td></tr></table></figure>
+
+<p>对应的json请求格式如下：</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">POST _bulk</span><br><span class="line">&#123; <span class="attr">&quot;index&quot;</span> : &#123; <span class="attr">&quot;_index&quot;</span> : <span class="string">&quot;test&quot;</span>, <span class="attr">&quot;_type&quot;</span> : <span class="string">&quot;_doc&quot;</span>, <span class="attr">&quot;_id&quot;</span> : <span class="string">&quot;1&quot;</span> &#125; &#125;</span><br><span class="line">&#123; <span class="attr">&quot;field1&quot;</span> : <span class="string">&quot;value1&quot;</span> &#125;</span><br><span class="line">&#123; <span class="attr">&quot;delete&quot;</span> : &#123; <span class="attr">&quot;_index&quot;</span> : <span class="string">&quot;test&quot;</span>, <span class="attr">&quot;_type&quot;</span> : <span class="string">&quot;_doc&quot;</span>, <span class="attr">&quot;_id&quot;</span> : <span class="string">&quot;2&quot;</span> &#125; &#125;</span><br><span class="line">&#123; <span class="attr">&quot;create&quot;</span> : &#123; <span class="attr">&quot;_index&quot;</span> : <span class="string">&quot;test&quot;</span>, <span class="attr">&quot;_type&quot;</span> : <span class="string">&quot;_doc&quot;</span>, <span class="attr">&quot;_id&quot;</span> : <span class="string">&quot;3&quot;</span> &#125; &#125;</span><br><span class="line">&#123; <span class="attr">&quot;field1&quot;</span> : <span class="string">&quot;value3&quot;</span> &#125;</span><br><span class="line">&#123; <span class="attr">&quot;update&quot;</span> : &#123;<span class="attr">&quot;_id&quot;</span> : <span class="string">&quot;1&quot;</span>, <span class="attr">&quot;_type&quot;</span> : <span class="string">&quot;_doc&quot;</span>, <span class="attr">&quot;_index&quot;</span> : <span class="string">&quot;test&quot;</span>&#125; &#125;</span><br><span class="line">&#123; <span class="attr">&quot;doc&quot;</span> : &#123;<span class="attr">&quot;field2&quot;</span> : <span class="string">&quot;value2&quot;</span>&#125; &#125;</span><br></pre></td></tr></table></figure>
+
+<p>在python中可以传入列表形式的数据，使用<code>es.bulk</code>批量传入请求。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">l = [&#123; <span class="string">&quot;index&quot;</span> : &#123; <span class="string">&quot;_index&quot;</span> : <span class="string">&quot;test&quot;</span>, <span class="string">&quot;_type&quot;</span> : <span class="string">&quot;_doc&quot;</span>, <span class="string">&quot;_id&quot;</span> : <span class="string">&quot;1&quot;</span> &#125; &#125;, </span><br><span class="line">     &#123; <span class="string">&quot;field1&quot;</span> : <span class="string">&quot;value1&quot;</span> &#125;, </span><br><span class="line">     &#123; <span class="string">&quot;index&quot;</span> : &#123; <span class="string">&quot;_index&quot;</span> : <span class="string">&quot;test&quot;</span>, <span class="string">&quot;_type&quot;</span> : <span class="string">&quot;_doc&quot;</span>, <span class="string">&quot;_id&quot;</span> : <span class="string">&quot;2&quot;</span> &#125; &#125;, </span><br><span class="line">     &#123; <span class="string">&quot;field1&quot;</span> : <span class="string">&quot;value2&quot;</span> &#125;]</span><br><span class="line">es.bulk(index=<span class="string">&#x27;test&#x27;</span>, doc_type=<span class="string">&#x27;_type&#x27;</span>, body=l)</span><br><span class="line">es.bulk(body=l) <span class="comment"># 简化写法，与上面是等价的</span></span><br></pre></td></tr></table></figure>
+
+<h5 id="5-2-批量获取"><a href="#5-2-批量获取" class="headerlink" title="5.2 批量获取"></a>5.2 批量获取</h5><p><a target="_blank" rel="noopener" href="https://www.elastic.co/guide/en/elasticsearch/reference/6.5/docs-multi-get.html">官方文档：Multi get (megt) API</a></p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 在不同的索引中获取文档</span></span><br><span class="line">GET /_mget</span><br><span class="line">&#123;</span><br><span class="line">    <span class="attr">&quot;docs&quot;</span> : [</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="attr">&quot;_index&quot;</span> : <span class="string">&quot;test&quot;</span>,</span><br><span class="line">            <span class="attr">&quot;_type&quot;</span> : <span class="string">&quot;_doc&quot;</span>,</span><br><span class="line">            <span class="attr">&quot;_id&quot;</span> : <span class="string">&quot;1&quot;</span></span><br><span class="line">        &#125;,</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="attr">&quot;_index&quot;</span> : <span class="string">&quot;test&quot;</span>,</span><br><span class="line">            <span class="attr">&quot;_type&quot;</span> : <span class="string">&quot;_doc&quot;</span>,</span><br><span class="line">            <span class="attr">&quot;_id&quot;</span> : <span class="string">&quot;2&quot;</span></span><br><span class="line">        &#125;</span><br><span class="line">    ]</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// 在同一个索引中获取文档</span></span><br><span class="line">GET /test/_doc/_mget</span><br><span class="line">&#123;</span><br><span class="line">    <span class="attr">&quot;ids&quot;</span> : [<span class="string">&quot;1&quot;</span>, <span class="string">&quot;2&quot;</span>]</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>在python中，使用<code>es.mget</code>批量调用数据。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">result = es.mget(index=<span class="string">&quot;test&quot;</span>, body=&#123;<span class="string">&#x27;ids&#x27;</span>: [<span class="string">&quot;1&quot;</span>, <span class="string">&quot;2&quot;</span>]&#125;)</span><br></pre></td></tr></table></figure>
+
+<h5 id="5-3-批量查询"><a href="#5-3-批量查询" class="headerlink" title="5.3 批量查询"></a>5.3 批量查询</h5><p><a target="_blank" rel="noopener" href="https://www.elastic.co/guide/en/elasticsearch/reference/6.5/search-multi-search.html">官方文档：Multi Search API</a></p>
+<p>msearch允许在同一个请求中执行多个搜索操作，请求的格式同样使用换行符分隔的json格式。</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">header\n</span><br><span class="line">body\n</span><br><span class="line">header\n</span><br><span class="line">body\n</span><br></pre></td></tr></table></figure>
+
+<p>对应的json请求格式如下：</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">GET twitter/_msearch</span><br><span class="line">&#123;&#125;</span><br><span class="line">&#123;<span class="attr">&quot;query&quot;</span> : &#123;<span class="attr">&quot;match_all&quot;</span> : &#123;&#125;&#125;, <span class="attr">&quot;from&quot;</span> : <span class="number">0</span>, <span class="attr">&quot;size&quot;</span> : <span class="number">10</span>&#125;</span><br><span class="line">&#123;&#125;</span><br><span class="line">&#123;<span class="attr">&quot;query&quot;</span> : &#123;<span class="attr">&quot;match_all&quot;</span> : &#123;&#125;&#125;&#125;</span><br><span class="line">&#123;<span class="attr">&quot;index&quot;</span> : <span class="string">&quot;twitter2&quot;</span>&#125;</span><br><span class="line">&#123;<span class="attr">&quot;query&quot;</span> : &#123;<span class="attr">&quot;match_all&quot;</span> : &#123;&#125;&#125;&#125;</span><br></pre></td></tr></table></figure>
+
+<p>在python中可以传入列表形式的数据，使用<code>es.msearch</code>批量传入查询，并得到批量的响应。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">l = [&#123;<span class="string">&quot;index&quot;</span> : <span class="string">&quot;test&quot;</span>&#125;,</span><br><span class="line">     &#123;<span class="string">&quot;query&quot;</span> : &#123;<span class="string">&quot;match_all&quot;</span> : &#123;&#125;&#125;, <span class="string">&quot;from&quot;</span> : <span class="number">0</span>, <span class="string">&quot;size&quot;</span> : <span class="number">2</span>&#125;,</span><br><span class="line">     &#123;<span class="string">&quot;index&quot;</span>: <span class="string">&quot;test&quot;</span>&#125;,</span><br><span class="line">     &#123;<span class="string">&quot;query&quot;</span>: &#123;<span class="string">&quot;match&quot;</span>: &#123;<span class="string">&quot;question&quot;</span>:<span class="string">&quot;windows&quot;</span>&#125;&#125;&#125;]</span><br><span class="line">result = es.msearch(l)</span><br></pre></td></tr></table></figure>
+
+<h3 id="其它：cURL访问"><a href="#其它：cURL访问" class="headerlink" title="其它：cURL访问"></a>其它：cURL访问</h3><p>可以通过cURL访问Elasticsearch，例如，通过curl查询索引中的信息：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">curl -XGET <span class="string">&#x27;localhost:9200/test&#x27;</span></span><br></pre></td></tr></table></figure>
+
+<p>还可以通过curl上传文档的方式，实现批量请求和批量查询。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">!这组有问题! </span><br><span class="line">curl -s -H <span class="string">&quot;Content-Type: application/x-ndjson&quot;</span> -XPOST localhost:9200/_bulk --data-binary <span class="string">&quot;@requests&quot;</span>; <span class="built_in">echo</span></span><br><span class="line">curl -H @&#123;<span class="string">&quot;Content-Type&quot;</span>=<span class="string">&quot;application/json&quot;</span>;<span class="string">&quot;charset&quot;</span>=<span class="string">&quot;UTF-8&quot;</span>&#125; -Method Post http://localhost:9200/_bulk?pretty -InFile <span class="string">&quot;numdata2.json&quot;</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h3><p><a target="_blank" rel="noopener" href="https://blog.csdn.net/u010454030/article/details/79872003">elasticsearch里面bulk的用法</a></p>
+
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
 	<div class="article-tag tagcloud">
 		<i class="icon-price-tags icon"></i>
 		<ul class="article-tag-list">
 			 
         		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">test</a>
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">说明</a>
         		</li>
       		
 		</ul>
 	</div>
 
-          
+      
 
+      
+
+      
+        
+<div class="share-btn share-icons tooltip-left">
+  <div class="tooltip tooltip-east">
+    <span class="tooltip-item">
+      <a href="javascript:;" class="share-sns share-outer">
+        <i class="icon icon-share"></i>
+      </a>
+    </span>
+    <span class="tooltip-content">
+      <div class="share-wrap">
+        <div class="share-icons">
+          <a class="weibo share-sns" href="javascript:;" data-type="weibo">
+            <i class="icon icon-weibo"></i>
+          </a>
+          <a class="weixin share-sns wxFab" href="javascript:;" data-type="weixin">
+            <i class="icon icon-weixin"></i>
+          </a>
+          <a class="qq share-sns" href="javascript:;" data-type="qq">
+            <i class="icon icon-qq"></i>
+          </a>
+          <a class="douban share-sns" href="javascript:;" data-type="douban">
+            <i class="icon icon-douban"></i>
+          </a>
+          <a class="qzone share-sns" href="javascript:;" data-type="qzone">
+            <i class="icon icon-qzone"></i>
+          </a>
+          <a class="facebook share-sns" href="javascript:;" data-type="facebook">
+            <i class="icon icon-facebook"></i>
+          </a>
+          <a class="twitter share-sns" href="javascript:;" data-type="twitter">
+            <i class="icon icon-twitter"></i>
+          </a>
+          <a class="google share-sns" href="javascript:;" data-type="google">
+            <i class="icon icon-google"></i>
+          </a>
         </div>
-        <div class="clearfix"></div>
-    </header>
+      </div>
+    </span>
+  </div>
+</div>
+
+<div class="page-modal wx-share js-wx-box">
+    <a class="close js-modal-close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <div class="wx-qrcode">
+      <img src="//pan.baidu.com/share/qrcode?url=https://fionayi.github.io/2021/07/09/Elasticsearch%E7%9A%84Python%E8%B0%83%E7%94%A8/" alt="微信分享二维码">
+    </div>
+</div>
+
+<div class="mask js-mask"></div>
+      
+      <div class="clearfix"></div>
+    </div>
   </div>
 </article>
+
+  
+<nav id="article-nav">
   
   
-    </div></section>
+    <a href="/2021/07/08/Elasticsearch%E6%A3%80%E7%B4%A2/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">Elasticsearch检索</div>
+      <i class="icon-circle-right"></i>
+    </a>
+  
+</nav>
+
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+        <div class="toc-container tooltip-left">
+            <i class="icon-font icon-category"></i>
+            <div class="tooltip tooltip-east">
+                <span class="tooltip-item">
+                </span>
+                <span class="tooltip-content">
+                    <div class="toc-article">
+                    <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%B4%A2%E5%BC%95%E7%9B%B8%E5%85%B3%E6%93%8D%E4%BD%9C"><span class="toc-number">1.</span> <span class="toc-text">索引相关操作</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#1-%E5%88%9B%E5%BB%BA%E7%B4%A2%E5%BC%95"><span class="toc-number">1.1.</span> <span class="toc-text">1. 创建索引</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2-%E6%9F%A5%E7%9C%8B%E7%B4%A2%E5%BC%95%E4%BF%A1%E6%81%AF"><span class="toc-number">1.2.</span> <span class="toc-text">2. 查看索引信息</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#3-%E5%88%A0%E9%99%A4%E7%B4%A2%E5%BC%95"><span class="toc-number">1.3.</span> <span class="toc-text">3. 删除索引</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%96%87%E6%A1%A3%E7%9B%B8%E5%85%B3%E6%93%8D%E4%BD%9C"><span class="toc-number">2.</span> <span class="toc-text">文档相关操作</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#1-%E5%88%9B%E5%BB%BA%E6%96%87%E6%A1%A3"><span class="toc-number">2.1.</span> <span class="toc-text">1. 创建文档</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2-%E6%9F%A5%E7%9C%8B%E6%96%87%E6%A1%A3%E4%BF%A1%E6%81%AF"><span class="toc-number">2.2.</span> <span class="toc-text">2. 查看文档信息</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#3-%E6%9B%B4%E6%96%B0%E6%96%87%E6%A1%A3"><span class="toc-number">2.3.</span> <span class="toc-text">3. 更新文档</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#4-%E5%88%A0%E9%99%A4%E6%96%87%E6%A1%A3"><span class="toc-number">2.4.</span> <span class="toc-text">4. 删除文档</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#5-%E6%89%B9%E9%87%8F%E6%93%8D%E4%BD%9C"><span class="toc-number">2.5.</span> <span class="toc-text">5. 批量操作</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#5-1-%E6%89%B9%E9%87%8F%E8%AF%B7%E6%B1%82"><span class="toc-number">2.5.1.</span> <span class="toc-text">5.1 批量请求</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#5-2-%E6%89%B9%E9%87%8F%E8%8E%B7%E5%8F%96"><span class="toc-number">2.5.2.</span> <span class="toc-text">5.2 批量获取</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#5-3-%E6%89%B9%E9%87%8F%E6%9F%A5%E8%AF%A2"><span class="toc-number">2.5.3.</span> <span class="toc-text">5.3 批量查询</span></a></li></ol></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%85%B6%E5%AE%83%EF%BC%9AcURL%E8%AE%BF%E9%97%AE"><span class="toc-number">3.</span> <span class="toc-text">其它：cURL访问</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Reference"><span class="toc-number">4.</span> <span class="toc-text">Reference</span></a></li></ol>
+                    </div>
+                </span>
+            </div>
+        </div>
+        
+    </div>
+</aside>
+
+
+
+  
+  
   
 
-    
+  
+
+  
+
+  
 
 
           </div>
@@ -216,9 +381,9 @@
 	var yiliaConfig = {
 		mathjax: true,
 		isHome: false,
-		isPost: false,
+		isPost: true,
 		isArchive: false,
-		isTag: true,
+		isTag: false,
 		isCategory: false,
 		open_in_new: false,
 		toc_hide_index: true,
